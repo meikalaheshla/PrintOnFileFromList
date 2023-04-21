@@ -7,6 +7,7 @@ using System.Diagnostics.SymbolStore;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PrintOnFileFromList
 {
@@ -31,6 +32,7 @@ namespace PrintOnFileFromList
             people.Add(new() { Nome = "Luca", SurName = "bubbe", CF = "brbd123" });
             people.Add(new() { Nome = "Simone", SurName = "bubbi", CF = "brbe123" });
             TextFileGenerator.SaveToFile(people, filePath);
+            TextFileGenerator.LoadFromCSVFile(people, filePath);
 
         }
     }
@@ -167,21 +169,36 @@ namespace PrintOnFileFromList
         }
 
         // Deserialization 
-        public static List<T> LoadFromCSVFile<T>(string filePath, ) where T : class, new()
+        public static  List<T> LoadFromCSVFile<T>(T data,string filePath ) where T : class, new()
         {
-            var cols = data[0].GetType().GetProperties();
+            
+
+            return null;
+
+            List<T> list = new List<T>();
+            var lines = System.IO.File.ReadAllLines(filePath);
+            var cols = data.GetType().GetProperties();
+
+            foreach (string item in lines)
+            {
+                var values = item.Split(';');
+                list.Add(new T()
+                {
+                   
+                });
+            }
+
 
             foreach (var col in cols)
             {
-            List<string> lines = System.IO.File.ReadLines(filePath).ToList();
 
-                //  Read From file and convert values to T Type!
-                var convertedValue = Convert.ChangeType(value, col.PropertyType);
-                col.SetValue(, convertedValue);
-                // -> TODO
+            //    //  Read From file and convert values to T Type!
+              var convertedValue = Convert.ChangeType(item, col.PropertyType);
+                col.SetValue(col,convertedValue);
+            //    // -> TODO
             }
 
-            return new List<T>;
+
         }
     }
 }
